@@ -26,6 +26,14 @@ const translations = {
     bmiNote: "BMI = น้ำหนัก(กก.) ÷ ส่วนสูง(ม.)²",
     bmrNote: "BMR คือพลังงานที่ร่างกายต้องการในการพักผ่อน",
     lang: "EN",
+    // New descriptions
+    bmiDescription: "ดัชนีมวลกาย (BMI) คือค่าที่ใช้ประเมินภาวะโภชนาการและสุขภาพของร่างกาย โดยคำนวณจากน้ำหนักและส่วนสูง",
+    bmrDescription: "อัตราเผาผลาญพลังงานขั้นพื้นฐาน (BMR) คือปริมาณแคลอรี่ที่ร่างกายใช้ในขณะพักผ่อนเต็มที่ ไม่รวมกิจกรรมใดๆ",
+    // Direct feedback messages
+    youAreThin: "คุณผอมเกินไป ควรเพิ่มน้ำหนักให้สมดุล",
+    youAreNormal: "คุณมีน้ำหนักปกติ สุขภาพดีเยี่ยม!",
+    youAreOverweight: "คุณน้ำหนักเกิน ควรควบคุมอาหารและออกกำลังกาย",
+    youAreObese: "คุณอ้วนเกินไป ควรปรึกษาแพทย์เพื่อปรับปรุงสุขภาพ",
   },
   en: {
     title: "BMI & BMR",
@@ -52,14 +60,46 @@ const translations = {
     bmiNote: "BMI = weight(kg) ÷ height(m)²",
     bmrNote: "BMR = calories your body needs at rest",
     lang: "ไทย",
+    // New descriptions
+    bmiDescription: "Body Mass Index (BMI) is a measure of body fat based on height and weight that applies to adult men and women.",
+    bmrDescription: "Basal Metabolic Rate (BMR) is the number of calories your body burns at rest to maintain normal bodily functions.",
+    // Direct feedback messages
+    youAreThin: "You are underweight. Consider gaining some healthy weight.",
+    youAreNormal: "You have a normal weight. Great job maintaining your health!",
+    youAreOverweight: "You are overweight. Focus on diet and exercise.",
+    youAreObese: "You are obese. Consult a doctor for health improvement.",
   },
 };
 
 function getBMICategory(bmi, t) {
-  if (bmi < 18.5) return { label: t.underweight, color: "#60a5fa", bg: "rgba(96,165,250,0.15)", bar: 20 };
-  if (bmi < 25) return { label: t.normal, color: "#34d399", bg: "rgba(52,211,153,0.15)", bar: 50 };
-  if (bmi < 30) return { label: t.overweight, color: "#fbbf24", bg: "rgba(251,191,36,0.15)", bar: 75 };
-  return { label: t.obese, color: "#f87171", bg: "rgba(248,113,113,0.15)", bar: 95 };
+  if (bmi < 18.5) return {
+    label: t.underweight,
+    color: "#60a5fa",
+    bg: "rgba(96,165,250,0.15)",
+    bar: 20,
+    feedback: t.youAreThin
+  };
+  if (bmi < 25) return {
+    label: t.normal,
+    color: "#34d399",
+    bg: "rgba(52,211,153,0.15)",
+    bar: 50,
+    feedback: t.youAreNormal
+  };
+  if (bmi < 30) return {
+    label: t.overweight,
+    color: "#fbbf24",
+    bg: "rgba(251,191,36,0.15)",
+    bar: 75,
+    feedback: t.youAreOverweight
+  };
+  return {
+    label: t.obese,
+    color: "#f87171",
+    bg: "rgba(248,113,113,0.15)",
+    bar: 95,
+    feedback: t.youAreObese
+  };
 }
 
 export default function App() {
@@ -254,6 +294,52 @@ export default function App() {
             </div>
           </div>
         )}
+
+        {/* Health Feedback */}
+        {result && (
+          <div style={{
+            marginTop:"1.5rem",
+            background:"rgba(255,255,255,0.05)", backdropFilter:"blur(20px)",
+            border:"1px solid rgba(255,255,255,0.1)", borderRadius:"20px",
+            padding:"1.5rem", boxShadow:"0 10px 30px rgba(0,0,0,0.2)",
+            opacity: animated ? 1 : 0, transform: animated ? "translateY(0)" : "translateY(20px)",
+            transition:"all 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s",
+          }}>
+            <div style={{ textAlign:"center" }}>
+              <div style={{ fontSize:"1.2rem", fontWeight:"600", color: cat.color, marginBottom:"0.5rem" }}>
+                💡 {t.bmiStatus}
+              </div>
+              <div style={{ fontSize:"1rem", color:"#e2e8f0", lineHeight:1.5, marginBottom:"1rem" }}>
+                {cat.feedback}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Descriptions */}
+        <div style={{
+          marginTop:"2rem",
+          background:"rgba(255,255,255,0.03)", backdropFilter:"blur(15px)",
+          border:"1px solid rgba(255,255,255,0.08)", borderRadius:"16px",
+          padding:"1.25rem",
+        }}>
+          <div style={{ marginBottom:"1.25rem" }}>
+            <h3 style={{ color:"#a78bfa", fontSize:"1rem", fontWeight:"600", margin:"0 0 0.5rem 0" }}>
+              📊 {t.yourBMI}
+            </h3>
+            <p style={{ color:"rgba(200,200,230,0.7)", fontSize:"0.85rem", lineHeight:1.5, margin:0 }}>
+              {t.bmiDescription}
+            </p>
+          </div>
+          <div>
+            <h3 style={{ color:"#34d399", fontSize:"1rem", fontWeight:"600", margin:"0 0 0.5rem 0" }}>
+              🔥 {t.yourBMR}
+            </h3>
+            <p style={{ color:"rgba(200,200,230,0.7)", fontSize:"0.85rem", lineHeight:1.5, margin:0 }}>
+              {t.bmrDescription}
+            </p>
+          </div>
+        </div>
 
         {/* Footer */}
         <p style={{ textAlign:"center", color:"rgba(200,200,230,0.25)", fontSize:"0.72rem", marginTop:"2rem", letterSpacing:"0.05em" }}>
