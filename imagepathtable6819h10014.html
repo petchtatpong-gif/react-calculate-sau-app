@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บทเรียนที่ 1: ระบบสุริยะ (Textbook Style)</title>
+    <style>
+        /* CSS ส่วนตกแต่งให้เหมือนหนังสือเรียน */
+        body {
+            font-family: "Sarabun", "Georgia", serif; /* ใช้ฟอนต์แบบมีหัว หรือ Sarabun ให้อ่านง่าย */
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px; /* จำกัดความกว้างไม่ให้เต็มจอเกินไป เหมือนหน้ากระดาษ */
+            margin: 0 auto;   /* จัดกึ่งกลางหน้าจอ */
+            padding: 40px;
+            background-color: #fff;
+        }
+
+        h1 {
+            font-family: "Arial", sans-serif;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        h2 {
+            color: #e67e22;
+            margin-top: 30px;
+            border-left: 5px solid #e67e22;
+            padding-left: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify; /* จัดย่อหน้าให้ชิดซ้ายขวา */
+        }
+
+        /* ส่วนตกแต่งรูปภาพ */
+        .figure {
+            text-align: center;
+            margin: 30px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        
+        img {
+            max-width: 100%; /* ให้รูปย่อขยายตามหน้าจอ */
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .caption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* ส่วนตกแต่งตาราง */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.95em;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        table thead tr {
+            background-color: #2c3e50;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3; /* ทำสีสลับบรรทัดให้อ่านง่าย */
+        }
+
+        tbody tr:last-of-type {
+            border-bottom: 2px solid #2c3e50;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>บทที่ 1: ดาวเคราะห์ในระบบสุริยะ</h1>
+    
+    <p>
+        ระบบสุริยะ (Solar System) ประกอบด้วยดวงอาทิตย์และวัตถุอื่น ๆ ที่โคจรรอบดวงอาทิตย์เนื่องจากแรงโน้มถ่วง 
+        ได้แก่ ดาวเคราะห์ 8 ดวง กับดวงจันทร์บริวารที่ค้นพบแล้ว 166 ดวง 
+        รวมถึงดาวเคราะห์แคระและวัตถุขนาดเล็กอื่น ๆ อีกนับล้านชิ้น
+    </p>
+
+    <div class="figure">
+        
+
+[Image of solar system diagram]
+
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Solar_sys8.jpg/800px-Solar_sys8.jpg" alt="แผนภาพระบบสุริยะ">
+        <div class="caption">รูปที่ 1.1: แผนภาพแสดงตำแหน่งของดาวเคราะห์ในระบบสุริยะ</div>
+    </div>
+
+    <h2>ข้อมูลจำเพาะของดาวเคราะห์</h2>
+    <p>
+        ตารางด้านล่างแสดงข้อมูลเปรียบเทียบระยะห่างจากดวงอาทิตย์และคาบการโคจรของดาวเคราะห์บางดวง
+        ซึ่งแสดงให้เห็นถึงความสัมพันธ์ระหว่างระยะทางและเวลาที่ใช้ในการโคจร
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ชื่อดาวเคราะห์ (Planet)</th>
+                <th>ประเภท (Type)</th>
+                <th>ระยะห่างจากดวงอาทิตย์ (AU)</th>
+                <th>คาบการโคจร (ปี)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>ดาวพุธ (Mercury)</td>
+                <td>ดาวเคราะห์หิน</td>
+                <td>0.39</td>
+                <td>0.24</td>
+            </tr>
+            <tr>
+                <td>ดาวศุกร์ (Venus)</td>
+                <td>ดาวเคราะห์หิน</td>
+                <td>0.72</td>
+                <td>0.62</td>
+            </tr>
+            <tr>
+                <td>โลก (Earth)</td>
+                <td>ดาวเคราะห์หิน</td>
+                <td>1.00</td>
+                <td>1.00</td>
+            </tr>
+            <tr>
+                <td>ดาวอังคาร (Mars)</td>
+                <td>ดาวเคราะห์หิน</td>
+                <td>1.52</td>
+                <td>1.88</td>
+            </tr>
+            <tr>
+                <td>ดาวพฤหัสบดี (Jupiter)</td>
+                <td>ดาวเคราะห์ก๊าซ</td>
+                <td>5.20</td>
+                <td>11.86</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <strong>หมายเหตุ:</strong> 1 AU (Astronomical Unit) คือระยะทางเฉลี่ยจากโลกถึงดวงอาทิตย์ ประมาณ 150 ล้านกิโลเมตร
+    </p>
+
+</body>
+</html>

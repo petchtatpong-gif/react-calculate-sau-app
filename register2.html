@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียนสมาชิก</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS: ส่วนของการตกแต่ง --- */
+        :root {
+            --bg-color: #fdfcf8;         /* พื้นหลังสีครีมอ่อนมาก */
+            --card-color: #ffffff;       /* สีกล่องฟอร์มสีขาว */
+            --text-color: #5d5c61;       /* สีตัวอักษรเทาเข้มอมน้ำตาล */
+            --accent-color: #dcc8a8;     /* สีหลัก (ครีมทอง/ลาเต้) */
+            --accent-hover: #cbb387;     /* สีหลักตอนเอาเมาส์วาง */
+            --border-color: #eeeae4;     /* สีขอบเส้น */
+            --error-color: #e68383;      /* สีแจ้งเตือน error (แดงอ่อน) */
+            --success-color: #83e6a4;    /* สีสำเร็จ (เขียวอ่อน) */
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .register-container {
+            background-color: var(--card-color);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* เงาฟุ้งๆ */
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #4a494d;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-sizing: border-box; /* สำคัญ: ให้ padding รวมในความกว้าง */
+            font-family: 'Prompt', sans-serif;
+            background-color: #faf9f6;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--accent-color);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(220, 200, 168, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* ส่วนแสดงข้อความแจ้งเตือน */
+        #message {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            height: 20px;
+        }
+        .error { color: #d9534f; }
+        .success { color: #5cb85c; }
+
+    </style>
+</head>
+<body>
+
+    <div class="register-container">
+        <h2>สร้างบัญชีใหม่</h2>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="fullname">ชื่อ-นามสกุล</label>
+                <input type="text" id="fullname" placeholder="กรอกชื่อของคุณ" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">อีเมล</label>
+                <input type="email" id="email" placeholder="name@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">รหัสผ่าน</label>
+                <input type="password" id="password" placeholder="กำหนดรหัสผ่าน" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">ยืนยันรหัสผ่าน</label>
+                <input type="password" id="confirm_password" placeholder="กรอกรหัสผ่านอีกครั้ง" required>
+            </div>
+
+            <button type="submit">ลงทะเบียน</button>
+        </form>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // --- JavaScript: ส่วนของการทำงาน ---
+        const form = document.getElementById('registerForm');
+        const messageBox = document.getElementById('message');
+
+        form.addEventListener('submit', function(event) {
+            // 1. หยุดการรีเฟรชหน้าจอเมื่อกดปุ่ม
+            event.preventDefault();
+
+            // 2. ดึงค่าจาก Input
+            const fullname = document.getElementById('fullname').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            // 3. รีเซ็ตข้อความแจ้งเตือน
+            messageBox.textContent = '';
+            messageBox.className = '';
+
+            // 4. ตรวจสอบเงื่อนไข (Validation)
+            
+            // เช็คว่ารหัสผ่านตรงกันไหม
+            if (password !== confirmPassword) {
+                showMessage("รหัสผ่านไม่ตรงกัน กรุณาลองใหม่", "error");
+                return; // จบการทำงานทันที
+            }
+
+            // เช็คความยาวรหัสผ่าน (ตัวอย่าง)
+            if (password.length < 6) {
+                showMessage("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร", "error");
+                return;
+            }
+
+            // 5. ถ้าผ่านทุกเงื่อนไข
+            // ในการใช้งานจริง ตรงนี้จะส่งข้อมูลไปหา Server
+            console.log("Registered:", fullname); // ดูใน Console
+            showMessage("ลงทะเบียนสำเร็จเรียบร้อย!", "success");
+            
+            // เคลียร์ฟอร์ม
+            form.reset();
+        });
+
+        // ฟังก์ชันช่วยแสดงข้อความ
+        function showMessage(text, type) {
+            messageBox.textContent = text;
+            messageBox.className = type; // ใส่ class error หรือ success
+        }
+    </script>
+
+</body>
+</html>

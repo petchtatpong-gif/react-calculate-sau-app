@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookStore - ร้านหนังสือออนไลน์</title>
+    
+    <!-- เชื่อมต่อ Bootstrap 5 สำหรับ Responsive Layout -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- เชื่อมต่อ Font Awesome สำหรับไอคอน -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- เชื่อมต่อฟอนต์ Google Fonts (Prompt) -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ================================================
+           การตั้งค่าพื้นฐาน (Global Styles)
+        ================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        /* ================================================
+           Navigation Bar (แถบเมนูด้านบน)
+        ================================================ */
+        .navbar {
+            background: white !important;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #2c3e50 !important;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: #0d6efd !important;
+        }
+
+        .navbar-brand i {
+            color: #0d6efd;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #0d6efd !important;
+        }
+
+        /* ================================================
+           ส่วนค้นหาสินค้า (Search Section)
+        ================================================ */
+        .search-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .search-section label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-control,
+        .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+        }
+
+        /* ================================================
+           การ์ดหนังสือ (Book Cards)
+        ================================================ */
+        .book-card {
+            border: none;
+            border-radius: 15px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        /* รูปภาพหนังสือ */
+        .book-img-top {
+            height: 280px;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.4s ease;
+        }
+
+        .book-card:hover .book-img-top {
+            transform: scale(1.05);
+        }
+
+        /* เนื้อหาในการ์ด */
+        .card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            min-height: 50px;
+        }
+
+        /* ราคาสินค้า */
+        .price-tag {
+            color: #dc3545;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .old-price {
+            color: #adb5bd;
+            text-decoration: line-through;
+            font-size: 1rem;
+            margin-left: 8px;
+        }
+
+        /* ดาวรีวิว */
+        .star-rating {
+            color: #ffc107;
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+
+        .star-rating i {
+            margin-right: 2px;
+        }
+
+        /* คำอธิบายหนังสือ */
+        .card-text {
+            color: #6c757d;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+
+        /* ================================================
+           ปุ่มต่างๆ (Buttons)
+        ================================================ */
+        .btn {
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+        }
+
+        .btn-custom-primary:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid #0d6efd;
+            color: #0d6efd;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #0d6efd;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* ================================================
+           Responsive Design (หน้าจอขนาดต่างๆ)
+        ================================================ */
+        @media (max-width: 768px) {
+            .search-section {
+                padding: 20px;
+            }
+
+            .book-img-top {
+                height: 220px;
+            }
+
+            .card-title {
+                font-size: 1rem;
+                min-height: auto;
+            }
+
+            .price-tag {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* ================================================
+           เอฟเฟกต์เพิ่มเติม (Additional Effects)
+        ================================================ */
+        .container {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Badge ส่วนลด */
+        .discount-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #dc3545;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .book-card {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================================================
+         NAVIGATION BAR (แถบเมนูด้านบน)
+         - ติดด้านบนเสมอด้วย sticky-top
+         - มีโลโก้และเมนูต่างๆ
+    ================================================ -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <!-- โลโก้และชื่อร้าน -->
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-book-open me-2"></i>BookStore
+            </a>
+            
+            <!-- ปุ่มเปิด/ปิดเมนูในมือถือ -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- เมนูต่างๆ -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-3">
+                        <a class="nav-link text-dark" href="#">
+                            <i class="fas fa-home me-1"></i>หน้าสินค้า
+                        </a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link text-dark" href="#">
+                            <i class="fas fa-heart me-1"></i>สินค้าที่ชอบ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-shopping-cart me-1"></i> ตะกร้า (0)
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================================================
+         MAIN CONTENT (เนื้อหาหลัก)
+    ================================================ -->
+    <div class="container py-5">
+
+        <!-- ส่วนค้นหาและกรองสินค้า -->
+        <div class="search-section">
+            <h4 class="mb-4">
+                <i class="fas fa-search me-2"></i>ค้นหาและกรองสินค้า
+            </h4>
+            
+            <div class="row g-3">
+                <!-- ช่องค้นหา -->
+                <div class="col-md-5">
+                    <label class="form-label">ค้นหาหนังสือ</label>
+                    <input type="text" 
+                           class="form-control" 
+                           placeholder="พิมพ์ชื่อหนังสือ หรือ คำค้น เช่น Python, Design">
+                </div>
+                
+                <!-- เลือกหมวดหมู่ -->
+                <div class="col-md-3">
+                    <label class="form-label">หมวดหมู่</label>
+                    <select class="form-select">
+                        <option selected>ทั้งหมด</option>
+                        <option>Programming</option>
+                        <option>Design</option>
+                        <option>Novel</option>
+                        <option>Business</option>
+                        <option>Self-Development</option>
+                    </select>
+                </div>
+
+                <!-- เรียงลำดับ -->
+                <div class="col-md-2">
+                    <label class="form-label">เรียงตาม</label>
+                    <select class="form-select">
+                        <option selected>แนะนำ</option>
+                        <option>ราคาต่ำ-สูง</option>
+                        <option>ราคาสูง-ต่ำ</option>
+                        <option>ยอดนิยม</option>
+                    </select>
+                </div>
+
+                <!-- ปุ่มค้นหา -->
+                <div class="col-md-2">
+                    <label class="form-label d-none d-md-block">&nbsp;</label>
+                    <button class="btn btn-primary w-100">
+                        <i class="fas fa-search me-1"></i> ค้นหา
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- แสดงจำนวนสินค้า -->
+        <div class="mb-4">
+            <h5 class="text-dark">
+                <i class="fas fa-book me-2"></i>หนังสือทั้งหมด 
+                <span class="badge bg-primary">6 รายการ</span>
+            </h5>
+        </div>
+
+        <!-- ================================================
+             PRODUCT GRID (กริดแสดงสินค้า)
+             - แสดงเป็น 3 คอลัมน์บนหน้าจอใหญ่
+             - 2 คอลัมน์บนแท็บเล็ต
+             - 1 คอลัมน์บนมือถือ
+        ================================================ -->
+        <div class="row g-4">
+            
+            <!-- การ์ดสินค้าที่ 1: Python -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card book-card">
+                    <span class="discount-badge">-34%</span>
+                    <img src="https://placehold.co/600x400/667eea/ffffff?text=Python+Programming&font=roboto" 
+                         class="card-img-top book-img-top" 
+                         alt="Python Book">
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">เรียนรู้ Python ฉบับเริ่มต้น</h5>
+                        
+                        <div class="mb-2">
+                            <span class="price-tag">฿299</span>
+                            <span class="old-price">฿450</span>
+                        </div>
+                        
+                        <div class="star-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="text-muted ms-2">(4.5)</span>
+                        </div>
+
+                        <p class="card-text">
+                            ปูพื้นฐานตั้งแต่ศูนย์ เหมาะสำหรับผู้เริ่มต้นที่ไม่เคยเขียนโค้ดมาก่อน 
+                            เข้าใจง่าย พร้อมแบบฝึกหัดและตัวอย่างโค้ดจริง
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                            </button>
+                            <button class="btn btn-custom-primary">
+                                <i class="fas fa-bolt me-2"></i>ซื้อเลย
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- การ์ดสินค้าที่ 2: UI/UX Design -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card book-card">
+                    <span class="discount-badge">-30%</span>
+                    <img src="https://placehold.co/600x400/764ba2/ffffff?text=UI+UX+Design&font=roboto" 
+                         class="card-img-top book-img-top" 
+                         alt="UI/UX Book">
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">ออกแบบ UI/UX เบื้องต้น</h5>
+                        
+                        <div class="mb-2">
+                            <span class="price-tag">฿350</span>
+                            <span class="old-price">฿499</span>
+                        </div>
+                        
+                        <div class="star-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span class="text-muted ms-2">(4.0)</span>
+                        </div>
+
+                        <p class="card-text">
+                            เข้าใจหลักคิด UX และการจัดวาง UI ให้ใช้งานง่ายในโปรเจกต์จริง 
+                            จากทฤษฎีสู่ปฏิบัติพร้อมเคสศึกษา
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                            </button>
+                            <button class="btn btn-custom-primary">
+                                <i class="fas fa-bolt me-2"></i>ซื้อเลย
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- การ์ดสินค้าที่ 3: นิยายแฟนตาซี -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card book-card">
+                    <span class="discount-badge">-33%</span>
+                    <img src="https://placehold.co/600x400/2c3e50/ffffff?text=Fantasy+Novel&font=roboto" 
+                         class="card-img-top book-img-top" 
+                         alt="Novel Book">
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">นิยายแฟนตาซี โลกเวทมนตร์</h5>
+                        
+                        <div class="mb-2">
+                            <span class="price-tag">฿199</span>
+                            <span class="old-price">฿299</span>
+                        </div>
+                        
+                        <div class="star-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span class="text-muted ms-2">(5.0)</span>
+                        </div>
+
+                        <p class="card-text">
+                            เรื่องราวการผจญภัยสุดเข้มข้นในดินแดนลึกลับสำหรับคอแฟนตาซี 
+                            ที่จะพาคุณหลุดไปอีกมิติแห่งจินตนาการ
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                            </button>
+                            <button class="btn btn-custom-primary">
+                                <i class="fas fa-bolt me-2"></i>ซื้อเลย
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- การ์ดสินค้าที่ 4-6 (ซ้ำเพื่อแสดงตัวอย่าง) -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card book-card">
+                    <span class="discount-badge">-34%</span>
+                    <img src="https://placehold.co/600x400/e74c3c/ffffff?text=JavaScript&font=roboto" 
+                         class="card-img-top book-img-top" 
+                         alt="JavaScript Book">
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">JavaScript สำหรับมือใหม่</h5>
+                        
+                        <div class="mb-2">
+                            <span class="price-tag">฿329</span>
+                            <span class="old-price">฿499</span>
+                        </div>
+                        
+                        <div class="star-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="text-muted ms-2">(4.5)</span>
+                        </div>
+
+                        <p class="card-text">
+                            เรียนรู้ JavaScript ตั้งแต่พื้นฐานจนถึงขั้นสูง 
+                            พร้อมสร้างเว็บแอพพลิเคชันที่ทันสมัย
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                            </button>
+                            <button class="btn btn-custom-primary">
+                                <i class="fas fa-bolt me-2"></i>ซื้อเลย
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card book-card">
+                    <span class="discount-badge">-25%</span>
+                    <img src="https://placehold.co/600x400/27ae60/ffffff?text=Web+Design&font=roboto" 
+                         class="card-img-top book-img-top" 
+                         alt="Web Design Book">
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">Web Design สมัยใหม่</h5>
+                        
+                        <div class="mb-2">
+                            <span class="price-tag">฿375</span>
+                            <span class="old-price">฿499</span>
+                        </div>
+                        
+                        <div class="star-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span class="text-muted ms-2">(4.0)</span>
+                        </div>
+
+                        <p class="card-text">
+                            เทคนิคการออกแบบเว็บไซต์ให้ทันสมัย สวยงาม 
+                            และใช้งานง่ายด้วยหลักการ Modern Design
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                            </button>
+                            <button class="btn btn-custom-primary">
+                                <i class="fas fa-bolt me-2"></i>ซื้อเลย
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card book-card">
+                    <span class="discount-badge">-40%</span>
+                    <img src="https://placehold.co/600x400/f39c12/ffffff?text=Mystery+Novel&font=roboto" 
+                         class="card-img-top book-img-top" 
+                         alt="Mystery Book">
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">นิยายสืบสวนปริศนา</h5>
+                        
+                        <div class="mb-2">
+                            <span class="price-tag">฿179</span>
+                            <span class="old-price">฿299</span>
+                        </div>
+                        
+                        <div class="star-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span class="text-muted ms-2">(5.0)</span>
+                        </div>
+
+                        <p class="card-text">
+                            คดีปริศนาที่ท้าทายสมอง พร้อมพลิกโผแบบไม่คาดคิด 
+                            สำหรับคอนิยายสืบสวนโดยเฉพาะ
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                            </button>
+                            <button class="btn btn-custom-primary">
+                                <i class="fas fa-bolt me-2"></i>ซื้อเลย
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ปุ่มโหลดเพิ่ม -->
+        <div class="text-center mt-5">
+            <button class="btn btn-primary btn-lg px-5">
+                <i class="fas fa-plus-circle me-2"></i>โหลดสินค้าเพิ่มเติม
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0 text-muted">
+                © 2024 BookStore. All rights reserved. | 
+                <i class="fas fa-heart text-danger"></i> Made with Love
+            </p>
+        </div>
+    </footer>
+
+    <!-- เชื่อมต่อ Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

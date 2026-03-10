@@ -1,0 +1,230 @@
+    <!-- หน้าแรก -->
+    <div id="home" class="page active">
+        <div class="card home-card">
+            <h1>🎉 ยินดีต้อนรับ</h1>
+            <p class="subtitle">ระบบจัดการสมาชิกที่ทันสมัยและใช้งานง่าย</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3>ปลอดภัย</h3>
+                    <p>ระบบรักษาความปลอดภัยสูง</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>รวดเร็ว</h3>
+                    <p>ใช้งานได้ทันที</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💡</div>
+                    <h3>ง่ายดาย</h3>
+                    <p>ออกแบบเพื่อผู้ใช้</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <button class="btn-primary" onclick="showPage('register')">เริ่มต้นใช้งาน</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- หน้า Login -->
+    <div id="login" class="page">
+        <div class="card">
+            <h2>🔐 เข้าสู่ระบบ</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">อีเมล</label>
+                    <input type="email" id="loginEmail" placeholder="example@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">รหัสผ่าน</label>
+                    <input type="password" id="loginPassword" placeholder="ใส่รหัสผ่านของคุณ" required>
+                    <button type="button" class="btn-toggle" onclick="togglePassword('loginPassword')">
+                        👁️ แสดง/ซ่อนรหัสผ่าน
+                    </button>
+                </div>
+                
+                <button type="submit">เข้าสู่ระบบ</button>
+            </form>
+            
+            <div id="loginMessage"></div>
+            
+            <p class="info-text">
+                ยังไม่มีบัญชี? <a href="#" onclick="showPage('register'); return false;">สมัครสมาชิก</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- หน้าสมัครสมาชิก -->
+    <div id="register" class="page">
+        <div class="card">
+            <h2>📝 สมัครสมาชิก</h2>
+            <form id="registerForm" novalidate>
+                <div class="form-group">
+                    <label for="regEmail">อีเมล *</label>
+                    <input type="email" id="regEmail" placeholder="example@email.com" required>
+                    <span class="error" id="emailError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regPassword">รหัสผ่าน * (อย่างน้อย 6 ตัวอักษร)</label>
+                    <input type="password" id="regPassword" placeholder="ตั้งรหัสผ่าน" required>
+                    <span class="error" id="passwordError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regConfirmPassword">ยืนยันรหัสผ่าน *</label>
+                    <input type="password" id="regConfirmPassword" placeholder="พิมพ์รหัสผ่านอีกครั้ง" required>
+                    <span class="error" id="confirmError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthdate">วัน/เดือน/ปีเกิด *</label>
+                    <input type="date" id="birthdate" required>
+                    <span class="error" id="birthError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">เพศ *</label>
+                    <select id="gender" required>
+                        <option value="">-- กรุณาเลือก --</option>
+                        <option value="male">ชาย</option>
+                        <option value="female">หญิง</option>
+                        <option value="other">อื่นๆ / ไม่ระบุ</option>
+                    </select>
+                    <span class="error" id="genderError"></span>
+                </div>
+                
+                <button type="submit">สร้างบัญชี</button>
+            </form>
+            
+            <div id="registerMessage"></div>
+            
+            <p class="info-text">
+                มีบัญชีอยู่แล้ว? <a href="#" onclick="showPage('login'); return false;">เข้าสู่ระบบ</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ฟังก์ชันเปลี่ยนหน้า
+    function showPage(pageName) {
+        const pages = document.querySelectorAll('.page');
+        const navBtns = document.querySelectorAll('.nav-btn');
+        
+        pages.forEach(page => page.classList.remove('active'));
+        navBtns.forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(pageName).classList.add('active');
+        event.target.classList.add('active');
+        
+        // ล้างข้อความแจ้งเตือน
+        document.getElementById('loginMessage').innerHTML = '';
+        document.getElementById('registerMessage').innerHTML = '';
+    }
+
+    // ฟังก์ชันแสดง/ซ่อนรหัสผ่าน
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    // ระบบ Login
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const messageDiv = document.getElementById('loginMessage');
+        
+        if (email && password) {
+            messageDiv.innerHTML = '<div class="message success">✅ เข้าสู่ระบบสำเร็จ!</div>';
+            setTimeout(() => {
+                this.reset();
+                messageDiv.innerHTML = '';
+            }, 2000);
+        } else {
+            messageDiv.innerHTML = '<div class="message error">❌ กรุณากรอกข้อมูลให้ครบถ้วน</div>';
+        }
+    });
+
+    // ระบบสมัครสมาชิก
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // ล้าง error ทั้งหมด
+        document.querySelectorAll('.error').forEach(el => el.textContent = '');
+        
+        const email = document.getElementById('regEmail');
+        const password = document.getElementById('regPassword');
+        const confirmPassword = document.getElementById('regConfirmPassword');
+        const birthdate = document.getElementById('birthdate');
+        const gender = document.getElementById('gender');
+        const messageDiv = document.getElementById('registerMessage');
+        
+        let isValid = true;
+
+        // ตรวจสอบอีเมล
+        if (!email.value) {
+            document.getElementById('emailError').textContent = 'กรุณากรอกอีเมล';
+            isValid = false;
+        } else if (!email.validity.valid) {
+            document.getElementById('emailError').textContent = 'รูปแบบอีเมลไม่ถูกต้อง';
+            isValid = false;
+        }
+
+        // ตรวจสอบรหัสผ่าน
+        if (!password.value) {
+            document.getElementById('passwordError').textContent = 'กรุณากรอกรหัสผ่าน';
+            isValid = false;
+        } else if (password.value.length < 6) {
+            document.getElementById('passwordError').textContent = 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร';
+            isValid = false;
+        }
+
+        // ตรวจสอบยืนยันรหัสผ่าน
+        if (!confirmPassword.value) {
+            document.getElementById('confirmError').textContent = 'กรุณากรอกยืนยันรหัสผ่าน';
+            isValid = false;
+        } else if (confirmPassword.value !== password.value) {
+            document.getElementById('confirmError').textContent = 'รหัสผ่านไม่ตรงกัน';
+            isValid = false;
+        }
+
+        // ตรวจสอบวันเกิด
+        if (!birthdate.value) {
+            document.getElementById('birthError').textContent = 'กรุณาเลือกวันเกิด';
+            isValid = false;
+        } else {
+            const selectedDate = new Date(birthdate.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate > today) {
+                document.getElementById('birthError').textContent = 'วันเกิดต้องไม่เป็นวันที่ในอนาคต';
+                isValid = false;
+            }
+        }
+
+        // ตรวจสอบเพศ
+        if (!gender.value) {
+            document.getElementById('genderError').textContent = 'กรุณาเลือกเพศ';
+            isValid = false;
+        }
+
+        // แสดงผลลัพธ์
+        if (isValid) {
+            messageDiv.innerHTML = '<div class="message success">🎉 สมัครสมาชิกสำเร็จ! กำลังพาคุณไปหน้าเข้าสู่ระบบ...</div>';
+            setTimeout(() => {
+                this.reset();
+                showPage('login');
+                messageDiv.innerHTML = '';
+            }, 2000);
+        } else {
+            messageDiv.innerHTML = '<div class="message error">❌ กรุณาแก้ไขข้อมูลที่มีข้อผิดพลาด</div>';
+        }
+    });
+</script>

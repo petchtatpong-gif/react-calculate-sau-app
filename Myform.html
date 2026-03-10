@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ฟอร์มข้อมูลส่วนตัว</title>
+    <style>
+        /* ตกแต่งให้ดูเรียบร้อยแบบง่ายๆ */
+        body { font-family: sans-serif; padding: 20px; display: flex; justify-content: center; }
+        form { width: 300px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        div { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+
+    <form>
+        <h3 style="text-align: center;">ข้อมูลผู้ใช้</h3>
+
+        <div>
+            <label>ชื่อ-นามสกุล:</label>
+            <input type="text" name="fullname" required>
+        </div>
+
+        <div>
+            <label>อีเมล:</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div>
+            <label>เบอร์โทรศัพท์:</label>
+            <input type="tel" name="phone">
+        </div>
+
+        <div>
+            <label>งานอดิเรก:</label>
+            <input type="text" name="hobby" placeholder="เช่น อ่านหนังสือ, ฟังเพลง">
+        </div>
+
+        <button type="submit">ส่งข้อมูล</button>
+    </form>
+
+</body>
+</html>

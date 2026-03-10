@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องคิดเลขพื้นฐาน</title>
+    <style>
+        /* --- CSS: ส่วนตกแต่ง --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .calculator {
+            background-color: #22252d;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            width: 300px;
+        }
+
+        /* หน้าจอแสดงผล */
+        #display {
+            width: 100%;
+            height: 60px;
+            background-color: #22252d;
+            color: white;
+            border: none;
+            font-size: 2.5rem;
+            text-align: right;
+            margin-bottom: 20px;
+            padding-right: 10px;
+            box-sizing: border-box; /* ให้ padding ไม่กระทบความกว้าง */
+        }
+
+        /* แผงปุ่มกด */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* แบ่งเป็น 4 คอลัมน์เท่าๆกัน */
+            gap: 15px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50%; /* ทำปุ่มเป็นวงกลม */
+            cursor: pointer;
+            color: white;
+            background-color: #2a2d36;
+            box-shadow: -3px -3px 5px rgba(255,255,255,0.05), 
+                        3px 3px 5px rgba(0,0,0,0.3); /* เงาแบบนูน */
+            transition: all 0.1s;
+        }
+
+        button:active {
+            box-shadow: inset -3px -3px 5px rgba(255,255,255,0.05), 
+                        inset 3px 3px 5px rgba(0,0,0,0.3); /* เวลากดปุ่มจะบุ๋มลง */
+        }
+
+        /* สีพิเศษสำหรับปุ่มต่างๆ */
+        .operator {
+            color: #26e6a3; /* สีเขียว */
+        }
+        
+        .ac-btn {
+            color: #e65a5a; /* สีแดง */
+        }
+
+        .equal-btn {
+            background-color: #26e6a3;
+            color: #22252d;
+            border-radius: 15px;
+            grid-column: span 2; /* ปุ่มเท่ากับกินพื้นที่ 2 ช่อง */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <input type="text" id="display" readonly>
+
+        <div class="buttons">
+            <button class="ac-btn" onclick="clearDisplay()">AC</button>
+            <button class="operator" onclick="deleteLast()">DEL</button>
+            <button class="operator" onclick="appendOperator('%')">%</button>
+            <button class="operator" onclick="appendOperator('/')">÷</button>
+
+            <button onclick="appendNumber('7')">7</button>
+            <button onclick="appendNumber('8')">8</button>
+            <button onclick="appendNumber('9')">9</button>
+            <button class="operator" onclick="appendOperator('*')">×</button>
+
+            <button onclick="appendNumber('4')">4</button>
+            <button onclick="appendNumber('5')">5</button>
+            <button onclick="appendNumber('6')">6</button>
+            <button class="operator" onclick="appendOperator('-')">-</button>
+
+            <button onclick="appendNumber('1')">1</button>
+            <button onclick="appendNumber('2')">2</button>
+            <button onclick="appendNumber('3')">3</button>
+            <button class="operator" onclick="appendOperator('+')">+</button>
+
+            <button onclick="appendNumber('0')">0</button>
+            <button onclick="appendNumber('.')">.</button>
+            <button class="equal-btn" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        // --- JavaScript: ส่วนประมวลผล ---
+        const display = document.getElementById('display');
+
+        // ฟังก์ชันเติมตัวเลขลงหน้าจอ
+        function appendNumber(number) {
+            display.value += number;
+        }
+
+        // ฟังก์ชันเติมเครื่องหมาย
+        function appendOperator(operator) {
+            // ป้องกันการใส่เครื่องหมายซ้ำติดกัน (เช่น ++)
+            const lastChar = display.value.slice(-1);
+            if (['+', '-', '*', '/', '%'].includes(lastChar)) {
+                return; 
+            }
+            display.value += operator;
+        }
+
+        // ฟังก์ชันล้างหน้าจอ (AC)
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        // ฟังก์ชันลบตัวอักษรล่าสุด (DEL)
+        function deleteLast() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        // ฟังก์ชันคำนวณผลลัพธ์ (=)
+        function calculate() {
+            try {
+                // ใช้ eval() เพื่อคำนวณ string ทางคณิตศาสตร์
+                // หมายเหตุ: ในโปรแกรมจริงที่ซับซ้อน ควรเลี่ยง eval() แต่สำหรับเครื่องคิดเลขพื้นฐานถือว่าใช้ได้
+                if(display.value === '') return;
+                
+                display.value = eval(display.value);
+            } catch (error) {
+                display.value = 'Error';
+                setTimeout(() => clearDisplay(), 1500); // เคลียร์หน้าจอหลังผ่านไป 1.5 วินาที
+            }
+        }
+    </script>
+
+</body>
+</html>
